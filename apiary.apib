@@ -1,0 +1,221 @@
+FORMAT: 1A
+HOST: http://localhost:8080/
+
+# Gojek Assignment API
+Admins can register users. They can create, edit and delete items. Users can login. After logging in they can view items and create bookings. They can also view their bookings.
+Please take care of the csrf token. The examples are given below.
+
+## Login [/login]
+
+### Made to return loginString as no page is specified [POST]
+
++ Response 200 (application/json)
+    + Headers
+            X-CSRF-TOKEN : c76be041-8ab0-4ab1-be47-d9ae27cf7553
+
+    + Body
+        loginString
+
+### Login as a user [POST]
+
+Pass username and password as request parameters to login.
+It will return 404 code as home page is not specified. 
+But the user will be logged in.
+
++ Response 404 (application/json)
+
+    + Headers
+
+            X-CSRF-TOKEN : c76be041-8ab0-4ab1-be47-d9ae27cf7553
+
+    + Body
+
+            {
+                "timestamp": 1511379720972,
+                "status": 404,
+                "error": "Not Found",
+                "message": "Not Found",
+                "path": "/"
+            }
+
+## Register User [/admin/registerUser]
+
+### Pass user details as json in the request to register [POST]
+
++ Request
+    
+    + Headers
+        X-CSRF-TOKEN : c76be041-8ab0-4ab1-be47-d9ae27cf7553
+    
+    + Body
+    
+        {
+             "username":"rana4",
+             "password":"rana4",
+             "passwordConfirm":"rana4"
+        }
+
++ Response 200 (application/json)
+    
+    +Body
+        Success
+
+        
+## Create Item [/admin/createItem]
+
+### Pass item details as json in the request to create item. Please use csrf token while testing [POST]
+
++ Request
+
+    + Body
+{
+"itemCode":"COD_REG_ITEM",
+"itemName":"itemName",
+"itemDescription":"itemDescription"
+}
+
++ Response 400 [application/json]
+    +Body
+        Success
+
+## Edit Item [/admin/editItem]
+
+### Pass edited item as json in the request to edit the item. [POST]
+
++ Request
+    + Body
+{
+"itemId": 9,
+"itemCode":"COD_REG_ITEM",
+"itemName":"itemNameEdit",
+"itemDescription":"itemDescriptionEdit"
+}
+
++ Response 200 [application/json]
+    + Body
+        Success
+
+## Delete Item [/admin/deleteItem?itemId=4]
+
+### Pass the item id as request parameter in the url [POST]
+
++ Response 200 [application/json]
+    +Body
+        Success
+
+## Get All Items [/user/getAllItems?page=0&size=2]
+
+### Get all items divided among pages [POST]
+
++ Response 200 [application/json]
+   + Body
+   {
+    "content": [
+        {
+            "itemId": 1,
+            "itemCode": "A",
+            "itemName": "itemA",
+            "itemDescription": "normal item",
+            "delFlg": 0
+        },
+        {
+            "itemId": 3,
+            "itemCode": "C",
+            "itemName": "Sony Camera",
+            "itemDescription": "200 MP camera",
+            "delFlg": 0
+        }
+    ],
+    "last": false,
+    "totalPages": 4,
+    "totalElements": 7,
+    "size": 2,
+    "number": 0,
+    "sort": null,
+    "first": true,
+    "numberOfElements": 2
+}
+
+## Get Single Item [/user/getItem?itemId=1]
+
+### Get single item by passing itemId in the request parameter [GET]
+
++ Response
+     + Body
+
+{
+    "itemId": 1,
+    "itemCode": "A",
+    "itemName": "itemA",
+    "itemDescription": "normal item",
+    "delFlg": 0
+}
+
+## Create booking [/user/createBooking]
+
+### Create booking by passing booking details in the request body [POST]
+
++ Request
+    + Body
+        [6,7,8]
+        
++ Response
+    + Body
+        Success
+
+## View booking [/user/viewBooking]
+
+### View booking made by you [GET]
++ Response
+    + Body
+        {
+    "content": [
+        {
+            "bookingId": 2,
+            "itemId": 6,
+            "userId": 1,
+            "bookingDate": 1511384143000,
+            "item": {
+                "itemId": 6,
+                "itemCode": "F",
+                "itemName": "Measurable item",
+                "itemDescription": "measurable item description",
+                "delFlg": 0
+            }
+        },
+        {
+            "bookingId": 2,
+            "itemId": 7,
+            "userId": 1,
+            "bookingDate": 1511384143000,
+            "item": {
+                "itemId": 7,
+                "itemCode": "G",
+                "itemName": "Toy car",
+                "itemDescription": "tou car description",
+                "delFlg": 0
+            }
+        },
+        {
+            "bookingId": 2,
+            "itemId": 8,
+            "userId": 1,
+            "bookingDate": 1511384143000,
+            "item": {
+                "itemId": 8,
+                "itemCode": "H",
+                "itemName": "Robot",
+                "itemDescription": "Robot description",
+                "delFlg": 0
+            }
+        }
+    ],
+    "last": true,
+    "totalPages": 1,
+    "totalElements": 3,
+    "size": 20,
+    "number": 0,
+    "sort": null,
+    "first": true,
+    "numberOfElements": 3
+}
